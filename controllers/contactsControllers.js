@@ -25,19 +25,49 @@ export const deleteContact = async (req, res) => {
   res.json(result);
 };
 
-export const createContact = async (req, res) => {
-  const result = await contactsService.addContact(req.body);
-  res.status(201).json(result);
+export const createContact = async (req, res, next) => {
+  try {
+    const { name, email, phone } = req.body;
+    const newResult = await contactsService.addContact(name, email, phone);
+    if (!newResult) {
+      next(HttpError(404));
+    }
+    res.status(201).send(newResult);
+  } catch (error) {
+    next(error);
+  }
 };
 
-export const updateContact = async (req, res) => {
-  const { id } = req.params;
-  const result = await contactsService.updateContact(id, req.body);
-  if (!result) {
-    res.status(404).json({ message: HttpError(404).message });
+export const updateContact = async (req, res, next) => {
+  try {
+    const { name, email, phone } = req.body;
+    const updatedResult = await contactsService.updateContact(
+      req.params.id,
+      name,
+      email,
+      phone
+    );
+    if (!updatedResult) {
+      next(HttpError(404));
+    }
+    res.status(200).send(updatedResult);
+  } catch (error) {
+    next(error);
   }
-  res.json(result);
 };
+// export const createContact = async (req, res) => {
+//   const result = await contactsService.addContact(req.body);
+//   res.status(201).json(result);
+// };
+
+// export const updateContact = async (req, res) => {
+//   const { id } = req.params;
+//   const result = await contactsService.updateContact(id, req.body);
+//   if (!result) {
+//     res.status(404).json({ message: HttpError(404).message });
+//   }
+//   res.json(result);
+// };
 
 // // import {
 // //   listContacts,
