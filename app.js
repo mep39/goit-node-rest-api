@@ -3,7 +3,7 @@ import morgan from "morgan";
 import cors from "cors";
 
 import contactsRouter from "./routes/contactsRouter.js";
-import HttpError from "./helpers/HttpError.js";
+// import HttpError from "./helpers/HttpError.js";
 
 const app = express();
 
