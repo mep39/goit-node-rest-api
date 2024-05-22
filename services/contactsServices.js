@@ -37,7 +37,7 @@ const addContact = async (body) => {
   return newContact;
 };
 
-const updateContact = async (contactId, body) => {
+const updContact = async (contactId, body) => {
   const contacts = await listContacts();
   const index = contacts.findIndex((contact) => contact.id === contactId);
   if (index === -1) {
@@ -48,10 +48,10 @@ const updateContact = async (contactId, body) => {
   return contacts[index];
 };
 
-export default {
+export {
   listContacts,
   getContactById,
   removeContact,
   addContact,
-  updateContact,
+  updContact,
 };
