@@ -55,8 +55,11 @@ export const createContact = async (req, res, next) => {
 
 export const updateContact = async (req, res, next) => {
   try {
-    const { name, email, phone } = req.body;
-    const updatedContact = await updContact(req.params.id, name, email, phone);
+    const { id } = req.params;
+    if (!Object.keys(req.body).length) {
+      return next(HttpError(400, "Body must have at least one field"));
+    }
+    const updatedContact = await updContact(id, req.body);
     if (!updatedContact) {
       next(HttpError(404));
     }
