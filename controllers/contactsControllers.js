@@ -1,10 +1,11 @@
-import {
-  listContacts,
-  getContactById,
-  removeContact,
-  addContact,
-  updContact,
-} from "../services/contactsServices.js";
+// import {
+//   listContacts,
+//   getContactById,
+//   removeContact,
+//   addContact,
+//   updContact,
+// }
+import contactsService from "../services/contactsServices.js";
 import HttpError from "../helpers/HttpError.js";
 
 export const getAllContacts = async (req, res, next) => {
@@ -18,7 +19,7 @@ export const getAllContacts = async (req, res, next) => {
 
 export const getOneContact = async (req, res, next) => {
   try {
-    const getContact = await getContactById(req.params.id);
+    const getContact = await contactsService.getContactById(req.params.id);
     if (!getContact) {
       next(HttpError(404));
     }
@@ -30,7 +31,7 @@ export const getOneContact = async (req, res, next) => {
 
 export const deleteContact = async (req, res, next) => {
   try {
-    const delContact = await removeContact(req.params.id);
+    const delContact = await contactsService.removeContact(req.params.id);
     if (!delContact) {
       next(HttpError(404));
     }
@@ -43,7 +44,7 @@ export const deleteContact = async (req, res, next) => {
 export const createContact = async (req, res, next) => {
   try {
     const { name, email, phone } = req.body;
-    const newContact = await addContact(name, email, phone);
+    const newContact = await contactsService.addContact(name, email, phone);
     if (!newContact) {
       next(HttpError(404));
     }
@@ -59,9 +60,9 @@ export const updateContact = async (req, res, next) => {
     if (!Object.keys(req.body).length) {
       return next(HttpError(400, "Body must have at least one field"));
     }
-    const updatedContact = await updContact(id, req.body);
+    const updatedContact = await contactsService.updContact(id, req.body);
     if (!updatedContact) {
-      next(HttpError(404));
+      return next(HttpError(404, "Not found"));
     }
     res.status(200).send(updatedContact);
   } catch (error) {
