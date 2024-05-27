@@ -10,7 +10,7 @@ import HttpError from "../helpers/HttpError.js";
 
 export const getAllContacts = async (req, res, next) => {
   try {
-    const getContacts = await listContacts();
+    const getContacts = await contactsService.listContacts();
     res.send(getContacts);
   } catch (error) {
     next(error);
